@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fortnite Accounts — iGV (Demo)</title>
+<style>
+:root{
+  --night:#0c0a2a; --storm:#1a1560; --deep:#231c7a; --panel:#1d1a55; --panel2:#262270; --line:#3a35a0;
+  --sky:#3d8bff; --ice:#9fd0ff; --bus:#ffe52e; --busdk:#c9a800; --cloud:#f2f4ff; --mist:#b9bdea; --dim:#8a8fca;
+  --ok:#57e39a; --warn:#ffb648;
+  --r-legendary:#f29a2e; --r-epic:#b45cff; --r-rare:#3aa0ff; --r-uncommon:#5cc43a; --r-series:#2fe0cf; --r-common:#97a0b5;
+  --display:"Burbank Big Condensed","Anton","Impact","Haettenschweiler","Arial Narrow Bold",sans-serif;
+  --body:"Segoe UI","Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--body);color:var(--cloud);background:var(--night);font-size:15px;line-height:1.45;
+  background-image:radial-gradient(1200px 600px at 70% -10%,#3a2fb8 0%,transparent 60%),radial-gradient(900px 500px at 0% 10%,#1f4fc0 0%,transparent 55%),
+  repeating-linear-gradient(115deg,rgba(255,255,255,.018) 0 2px,transparent 2px 26px);background-attachment:fixed}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--ice)}
+:focus-visible{outline:3px solid var(--bus);outline-offset:2px}
+.wrap{max-width:1280px;margin:0 auto;padding:0 20px}
+.disp{font-family:var(--display);text-transform:uppercase;font-style:italic;letter-spacing:.01em;line-height:1}
+/* top bar */
+.top{background:rgba(12,10,42,.85);backdrop-filter:blur(8px);border-bottom:2px solid var(--line);position:sticky;top:0;z-index:30}
+.top .wrap{display:flex;align-items:center;gap:18px;height:56px}
+.logo{font-family:var(--display);font-style:italic;font-size:26px;color:var(--bus);text-decoration:none}
+.logo small{font-family:var(--body);font-style:normal;font-size:11px;color:var(--mist);margin-left:8px;border:1px solid var(--line);padding:1px 6px;border-radius:3px}
+.nav{display:flex;gap:16px;font-size:14px;color:var(--mist)}
+.nav b{color:var(--cloud)}
+.top .sp{flex:1}
+.notesbtn{background:none;border:1px dashed var(--bus);color:var(--bus);padding:5px 10px;border-radius:4px;font-size:13px}
+.notesbtn[aria-pressed=true]{background:var(--bus);color:#1a1560}
+/* buttons */
+.btn{border:0;background:var(--panel2);color:var(--cloud);padding:9px 16px;border-radius:4px;font-weight:600;border-bottom:3px solid rgba(0,0,0,.35)}
+.btn:hover{filter:brightness(1.15)}
+.btn.y{background:var(--bus);color:#1b1464;border-bottom-color:var(--busdk);font-family:var(--display);font-style:italic;text-transform:uppercase;font-size:20px;letter-spacing:.02em;padding:11px 22px;transform:skewX(-6deg)}
+.btn.y>span{display:inline-block;transform:skewX(6deg)}
+.btn.y:active{transform:skewX(-6deg) translateY(2px);border-bottom-width:1px}
+.btn.ghost{background:transparent;border:1px solid var(--line);border-bottom-width:1px}
+.btn.sm{padding:5px 10px;font-size:13px}
+.linkbtn{background:none;border:0;color:var(--ice);padding:0;text-decoration:underline;text-underline-offset:2px}
+/* listing head */
+.head{padding:26px 0 8px}
+.crumb{font-size:13px;color:var(--dim);margin-bottom:10px}
+.head h1{font-size:clamp(40px,6vw,68px);margin:0;text-shadow:0 4px 0 rgba(0,0,0,.35)}
+.head .sub{color:var(--mist);margin:8px 0 0;max-width:62ch}
+.finder{margin-top:18px;background:linear-gradient(100deg,#2a55d8,#5a34d6);padding:16px 18px;clip-path:polygon(0 0,100% 0,calc(100% - 18px) 100%,0 100%);position:relative}
+.finder label{font-family:var(--display);font-style:italic;text-transform:uppercase;font-size:22px;display:block;margin-bottom:8px}
+.fbox{display:flex;flex-wrap:wrap;gap:6px;background:#fff;border-radius:4px;padding:6px;align-items:center;max-width:820px;position:relative}
+.fbox input{flex:1;min-width:180px;border:0;outline:0;color:#16124a;font-size:16px;padding:6px}
+.pick{background:#1b1464;color:#fff;border-radius:3px;padding:3px 4px 3px 9px;font-size:13px;display:flex;align-items:center;gap:4px}
+.pick button{background:none;border:0;color:#fff;font-size:15px;line-height:1;padding:0 4px}
+.sugg{position:absolute;left:0;right:0;top:100%;background:#fff;color:#16124a;border-radius:0 0 4px 4px;box-shadow:0 12px 30px rgba(0,0,0,.4);z-index:20;max-height:280px;overflow:auto}
+.sugg button{display:flex;gap:10px;align-items:center;width:100%;text-align:left;background:none;border:0;color:#16124a;padding:8px 12px}
+.sugg button:hover,.sugg button.on{background:#e8ecff}
+.sugg i{font-style:normal;font-size:12px;color:#5b5f8f;margin-left:auto}
+.dot{width:10px;height:10px;border-radius:2px;display:inline-block;flex:none}
+.hot{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center;font-size:13px;max-width:900px}
+.hot span{color:#dfe6ff}
+.chip{background:rgba(12,10,42,.45);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:3px;padding:4px 9px;font-size:13px}
+.chip:hover{background:rgba(12,10,42,.8)}
+.chip[aria-pressed=true]{background:var(--bus);color:#1b1464;border-color:var(--bus);font-weight:700}
+/* layout */
+.cols{display:grid;grid-template-columns:250px 1fr;gap:22px;margin-top:20px;padding-bottom:120px}
+.rail{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px;align-self:start;position:sticky;top:72px;max-height:calc(100vh - 90px);overflow:auto}
+.rail h3{font-size:14px;margin:14px 0 6px;color:var(--ice)}
+.rail h3:first-child{margin-top:0}
+.rail label{display:flex;gap:8px;align-items:center;padding:3px 0;font-size:14px;color:var(--cloud)}
+.rail label em{font-style:normal;color:var(--dim);margin-left:auto;font-size:12px}
+.rail input[type=checkbox],.rail input[type=radio]{accent-color:var(--bus);width:16px;height:16px}
+.rng{display:flex;gap:6px;align-items:center}
+.rng input{width:100%;background:var(--night);border:1px solid var(--line);border-radius:4px;padding:6px 8px}
+.rail select{width:100%;background:var(--night);border:1px solid var(--line);border-radius:4px;padding:6px 8px}
+.hint{font-size:12px;color:var(--dim);margin:2px 0 0}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px}
+.bar .cnt{font-family:var(--display);font-style:italic;font-size:24px;text-transform:uppercase}
+.bar select{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:7px 10px}
+.act{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.act .chip{border-color:var(--line);background:var(--panel)}
+.colhead{display:grid;grid-template-columns:230px minmax(0,1fr) 230px 130px;gap:18px;padding:0 14px 6px 19px;font-size:12px;color:var(--dim)}
+.colhead .st{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;text-align:right}
+/* rows */
+.row{display:grid;grid-template-columns:230px minmax(0,1fr) 230px 130px;grid-template-areas:'hd hd hd hd' 'ti st tr pr';gap:10px 18px;align-items:center;background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--rc,var(--line));border-radius:6px;padding:12px 14px;margin-bottom:10px;position:relative}
+.row:hover{background:var(--panel2);border-color:var(--sky);border-left-color:var(--rc)}
+.row .hit{position:absolute;inset:0;border:0;background:none;z-index:1;border-radius:6px}
+.row .z{position:relative;z-index:2}
+.row .hd{grid-area:hd;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}.row .tiles{grid-area:ti}.row .stats{grid-area:st}.row .trust{grid-area:tr}.row .price{grid-area:pr}
+.tiles{display:grid;grid-template-columns:repeat(4,50px);gap:6px;align-items:start}
+.tile{width:50px;text-align:center}
+.tile .art{height:50px;border-radius:4px;position:relative;overflow:hidden;background:linear-gradient(160deg,color-mix(in srgb,var(--c) 85%,#fff) 0%,var(--c) 45%,color-mix(in srgb,var(--c) 45%,#000) 100%);border-bottom:3px solid color-mix(in srgb,var(--c) 60%,#000);display:grid;place-items:center}
+.tile .art::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(120deg,rgba(255,255,255,.14) 0 5px,transparent 5px 16px)}
+.tile svg{width:62%;height:62%;position:relative;fill:rgba(255,255,255,.92);filter:drop-shadow(0 2px 0 rgba(0,0,0,.3))}
+.tile .nm{font-size:10px;line-height:1.15;margin-top:3px;color:var(--mist);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.tile.more .art{background:var(--night);border:1px dashed var(--line);color:var(--mist);font-weight:700;font-size:13px}
+.tile.more .art::before{display:none}
+.tile.match .art{outline:3px solid var(--bus)}
+.tile.big{width:auto}.tile.big .art{height:104px}.tile.big .nm{font-size:13px;color:var(--cloud);-webkit-line-clamp:1}
+.rtitle{font-weight:700;font-size:16px;margin:0}
+.tags{display:flex;flex-wrap:wrap;gap:5px;font-size:12px}
+.tag{border:1px solid var(--line);border-radius:3px;padding:1px 6px;color:var(--mist)}
+.tag.og{border-color:var(--r-legendary);color:#ffd08a}
+.tag.has{background:var(--bus);color:#1b1464;border-color:var(--bus);font-weight:700}
+.tag.miss{border-style:dashed}
+.plat{font-size:12px;color:var(--dim)}
+.plat b{color:var(--cloud);font-weight:600}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;text-align:right}
+.stats b{display:block;font-family:var(--display);font-style:italic;font-size:22px;font-weight:400;white-space:nowrap}
+.stats span{font-size:11px;color:var(--mist);display:block;margin-top:1px}
+.trust{font-size:13px;color:var(--mist);display:grid;gap:3px}
+.vf{display:inline-flex;gap:5px;align-items:center;font-weight:700;color:var(--ok)}
+.vf.no{color:var(--mist);font-weight:500}
+.vf svg{width:15px;height:15px;fill:currentColor}
+.price{text-align:right}
+.price b{font-family:var(--display);font-style:italic;font-size:32px;font-weight:400;color:var(--bus);display:block}
+.price .cmp{font-size:12px;color:var(--mist);display:inline-flex;gap:5px;align-items:center;margin-top:4px}
+.price .seen{font-size:11px;color:var(--dim);display:block}
+.empty{background:var(--panel);border:1px dashed var(--line);border-radius:6px;padding:28px;text-align:center}
+.empty h3{font-size:28px;margin:0 0 6px}
+/* contract protection */
+.cb{display:inline-flex;align-items:center;gap:5px;background:#fff;color:#1b1464;font-weight:800;font-size:12px;padding:2px 9px 2px 6px;border-radius:3px;transform:skewX(-8deg);white-space:nowrap;box-shadow:0 2px 0 #8f9bff}
+.cb>*{transform:skewX(8deg)}
+.cb svg{width:15px;height:15px;fill:#4a35e0;flex:none}
+.cb.lg{font-size:14px;padding:4px 12px 4px 8px}.cb.lg svg{width:19px;height:19px}
+.cstrip{margin-top:12px;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;background:var(--panel);border:1px solid #8f9bff;border-left:5px solid #fff;border-radius:6px;padding:10px 14px}
+.cstrip .tl{font-family:var(--display);font-style:italic;text-transform:uppercase;font-size:21px}
+.cstrip p{margin:0;color:var(--mist);font-size:13px;flex:1;min-width:260px}
+.sw{display:inline-flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;user-select:none}
+.sw input{position:absolute;opacity:0;width:0;height:0}
+.sw i{width:40px;height:22px;border-radius:11px;background:var(--line);position:relative;transition:background .15s;flex:none}
+.sw i::after{content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .15s}
+.sw input:checked+i{background:#fff}.sw input:checked+i::after{transform:translateX(18px);background:#4a35e0}
+.sw input:focus-visible+i{outline:3px solid var(--bus);outline-offset:2px}
+.sec.con{border:2px solid #8f9bff;background:linear-gradient(170deg,#2a2590,#1d1a55)}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin:16px 0 6px;counter-reset:f;list-style:none;padding:0}
+.flow li{counter-increment:f;position:relative;padding:0 8px;text-align:center;font-size:13px;color:var(--mist)}
+.flow li::before{content:counter(f);display:grid;place-items:center;width:38px;height:38px;margin:0 auto 8px;border-radius:50%;background:var(--night);border:2px solid #8f9bff;font-family:var(--display);font-style:italic;font-size:20px;color:#fff;position:relative;z-index:1}
+.flow li::after{content:"";position:absolute;top:19px;left:50%;width:100%;height:2px;background:#8f9bff}
+.flow li:last-child::after{display:none}
+.flow li.done::before{background:#fff;color:#1b1464;border-color:#fff}
+.flow li b{display:block;color:var(--cloud);font-size:14px;margin-bottom:2px}
+.flow li em{font-style:normal;display:inline-block;margin-top:4px;font-size:11px;border:1px solid var(--line);border-radius:3px;padding:0 5px}
+.flow li.done em{border-color:var(--ok);color:var(--ok)}
+table.vs{width:100%;border-collapse:collapse;font-size:14px;margin-top:6px}
+table.vs th,table.vs td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.vs thead th{font-size:13px;color:var(--ice)}
+table.vs tbody th{color:var(--dim);font-weight:500;width:150px}
+.qa{border-top:1px solid var(--line);padding:10px 0}
+.qa summary{cursor:pointer;font-weight:700}
+.qa p{margin:8px 0 0;color:var(--mist)}.qa ul{margin:6px 0 0;padding-left:18px;color:var(--mist)}
+.signbox{background:var(--night);border:1px solid #8f9bff;border-radius:5px;padding:12px 14px;margin-top:12px}
+.signbox .ln{display:flex;gap:8px;align-items:center;font-size:14px;margin:4px 0}
+/* compare tray */
+.tray{position:fixed;left:0;right:0;bottom:0;background:#120f3d;border-top:3px solid var(--bus);z-index:35;padding:10px 0;transform:translateY(110%);transition:transform .2s}
+.tray.on{transform:none}
+.tray .wrap{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.tray .it{background:var(--panel2);border-radius:4px;padding:5px 8px;font-size:13px;display:flex;gap:6px;align-items:center}
+.tray .it button{background:none;border:0;color:var(--mist)}
+/* modal */
+.ov{position:fixed;inset:0;background:rgba(6,5,24,.78);z-index:50;display:none;align-items:flex-start;justify-content:center;padding:4vh 14px;overflow:auto}
+.ov.on{display:flex}
+.md{background:var(--panel);border:2px solid var(--sky);border-radius:8px;width:min(960px,100%);padding:20px 22px;position:relative}
+.md.narrow{width:min(620px,100%)}
+.md h2{font-size:32px;margin:0 0 12px}
+.md .x{position:absolute;right:12px;top:10px;background:none;border:0;font-size:26px;color:var(--mist)}
+table.ct{width:100%;border-collapse:collapse;font-size:14px}
+table.ct th,table.ct td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.ct th{color:var(--dim);font-weight:500;width:150px}
+table.ct td.best{color:var(--bus);font-weight:700}
+/* detail */
+.dback{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:16px 0 4px;font-size:14px}
+.dback .pos{color:var(--dim)}
+.dgrid{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:24px;padding-bottom:80px}
+.dhead h1{font-size:clamp(30px,4.4vw,50px);margin:6px 0 8px;text-shadow:0 3px 0 rgba(0,0,0,.35)}
+.anch{display:flex;gap:4px;flex-wrap:wrap;margin:14px 0 4px;position:sticky;top:58px;background:#0c0a2a;padding:8px 6px;z-index:10;border-bottom:1px solid var(--line)}
+.anch a{color:var(--mist);text-decoration:none;font-size:13px;padding:5px 10px;border-radius:3px;border:1px solid transparent}
+.anch a:hover{border-color:var(--line);color:#fff}
+.anch a.on{background:var(--sky);color:#fff;font-weight:700}
+.sec{transition:border-color .2s,box-shadow .2s}
+.sec.cur{border-color:var(--sky);box-shadow:0 0 0 2px var(--sky)}
+.sec{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:18px;margin-top:14px;scroll-margin-top:110px}
+.sec h2{font-size:28px;margin:0 0 4px}
+.sec .lead{color:var(--mist);margin:0 0 12px;max-width:70ch}
+.heroes{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:14px}
+.kv div{background:var(--night);border-radius:4px;padding:8px 10px}
+.kv b{font-family:var(--display);font-style:italic;font-weight:400;font-size:26px;display:block}
+.kv span{font-size:12px;color:var(--mist)}
+.src{font-size:11px;display:inline-flex;gap:3px;align-items:center;color:var(--ok)}
+.src.s{color:var(--warn)}
+.ltabs{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 8px}
+.ltabs button{background:var(--night);border:1px solid var(--line);border-radius:3px;padding:6px 10px;font-size:13px}
+.ltabs button[aria-selected=true]{background:var(--sky);border-color:var(--sky);font-weight:700}
+.ltools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.ltools input,.ltools select{background:var(--night);border:1px solid var(--line);border-radius:4px;padding:6px 8px}
+.locker{display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:8px}
+.locker .tile{width:auto;background:none;border:0;padding:0;color:inherit}
+.locker .tile .art{height:74px}
+.shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:12px}
+.shot{aspect-ratio:16/9;border-radius:4px;border:1px solid var(--line);background:linear-gradient(135deg,#27208a,#123a8f);position:relative;overflow:hidden;padding:0}
+.shot::before{content:"";position:absolute;inset:14% 8%;background:repeating-linear-gradient(90deg,rgba(255,255,255,.16) 0 12%,transparent 12% 15%);border-radius:3px}
+.shot span{position:absolute;left:6px;bottom:5px;font-size:11px;background:rgba(0,0,0,.55);padding:1px 5px;border-radius:2px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.box{background:var(--night);border-radius:5px;padding:12px 14px}
+.box h4{margin:0 0 6px;font-size:14px;color:var(--ice)}
+.box ul{margin:0;padding-left:18px}.box li{margin:3px 0}
+.box.ok{border-left:4px solid var(--ok)}.box.wn{border-left:4px solid var(--warn)}.box.tbc{border:1px dashed var(--warn)}
+.demo{display:inline-block;font-size:11px;border:1px dashed var(--warn);color:var(--warn);border-radius:3px;padding:0 5px;margin-left:6px;vertical-align:middle;font-family:var(--body);font-style:normal;text-transform:none;letter-spacing:0}
+.chk{display:grid;grid-template-columns:auto 1fr auto;gap:6px 10px;font-size:14px}
+.chk .y{color:var(--ok)}.chk .n{color:var(--warn)}
+.steps{counter-reset:s;display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.steps li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start}
+.steps li::before{content:counter(s);font-family:var(--display);font-style:italic;font-size:22px;background:var(--sky);width:34px;height:34px;display:grid;place-items:center;border-radius:4px}
+.rev{border-top:1px solid var(--line);padding:8px 0;font-size:14px}
+.rev span{color:var(--dim);font-size:12px}
+details.sn{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:12px 18px}
+details.sn summary{cursor:pointer;font-weight:600}
+.buy{position:sticky;top:72px;align-self:start;background:linear-gradient(170deg,#2b2596,#1d1a55);border:2px solid var(--sky);border-radius:8px;padding:18px}
+.buy .p{font-family:var(--display);font-style:italic;font-size:54px;color:var(--bus);line-height:1}
+.buy .fee{font-size:12px;color:var(--mist);margin:4px 0 12px}
+.buy .btn.y{width:100%;font-size:26px;padding:13px}
+.buy dl{margin:14px 0 0;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:14px}
+.buy dt{color:var(--dim)}.buy dd{margin:0}
+.buy .row2{display:flex;gap:8px;margin-top:10px}
+.buy .row2 .btn{flex:1}
+.sim{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.simc{background:var(--night);border:1px solid var(--line);border-radius:5px;padding:10px;text-align:left;color:inherit}
+.simc:hover{border-color:var(--sky)}
+.simc b{color:var(--bus);font-family:var(--display);font-style:italic;font-weight:400;font-size:22px}
+/* checkout */
+.prog{display:flex;gap:6px;margin-bottom:14px}
+.prog i{flex:1;height:6px;background:var(--line);border-radius:3px}
+.prog i.on{background:var(--bus)}
+.fld{display:grid;gap:4px;margin:10px 0}
+.fld input{background:var(--night);border:1px solid var(--line);border-radius:4px;padding:9px 10px}
+.pm label{display:flex;gap:10px;align-items:center;background:var(--night);border:1px solid var(--line);border-radius:4px;padding:9px 10px;margin:6px 0}
+.pm label em{margin-left:auto;font-style:normal;color:var(--mist);font-size:13px}
+.sum{background:var(--night);border-radius:5px;padding:10px 12px;display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:14px;margin-top:10px}
+.sum .t{font-weight:700;font-size:17px;color:var(--bus);border-top:1px solid var(--line);padding-top:6px}
+.mfoot{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:16px;flex-wrap:wrap}
+.err{color:#ff8f8f;font-size:13px;min-height:18px}
+.cred{font-family:ui-monospace,Menlo,Consolas,monospace;background:#000;border-radius:4px;padding:10px;font-size:13px}
+.foot{border-top:1px solid var(--line);color:var(--dim);font-size:12px;padding:16px 0 30px}
+/* design notes */
+body.notes [data-note]{outline:2px dashed var(--bus);outline-offset:3px}
+body.notes [data-note]:not(.rail):not(.buy){position:relative}
+body.notes [data-note]::after{content:attr(data-note);position:absolute;left:0;top:-4px;transform:translateY(-100%);background:var(--bus);color:#1b1464;font:600 12px/1.35 var(--body);padding:4px 7px;border-radius:3px;max-width:420px;white-space:normal;z-index:25;text-transform:none;font-style:normal;letter-spacing:0;text-align:left;box-shadow:0 4px 10px rgba(0,0,0,.4)}
+@media (max-width:1100px){
+  .colhead{display:none}
+  .row{grid-template-columns:230px minmax(0,1fr) 130px;grid-template-areas:'hd hd hd' 'ti st pr' 'tr tr tr'}
+    .row .trust{grid-auto-flow:column;justify-content:start;gap:16px;align-items:center}
+}
+@media (max-width:860px){
+  .cols{grid-template-columns:1fr}.rail{position:static;max-height:none}
+  .dgrid{grid-template-columns:1fr}.buy{position:static;order:-1}
+  .two{grid-template-columns:1fr}.nav{display:none}
+  .row{grid-template-columns:1fr auto;grid-template-areas:'hd hd' 'ti ti' 'st st' 'tr pr'}
+  .row .stats{text-align:left}.row .trust{grid-auto-flow:row;gap:3px}
+  .flow{grid-template-columns:1fr}.flow li{text-align:left;display:grid;grid-template-columns:38px 1fr;gap:0 10px;padding:0 0 14px}.flow li::before{margin:0;grid-row:1/4}.flow li::after{left:18px;top:38px;width:2px;height:100%}
+  .notesbtn{font-size:11px;padding:4px 6px}.tray .it{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="logo" href="#/">iGV<small>Design demo</small></a>
+  <nav class="nav"><span>Coins</span><b>Accounts</b><span>Items</span></nav>
+  <span class="sp"></span>
+  <button class="notesbtn" id="notesBtn" aria-pressed="false">设计注释 Design notes</button>
+</div></header>
+<main id="app"></main>
+<div class="tray" id="tray"><div class="wrap" id="trayIn"></div></div>
+<div class="ov" id="ov"><div class="md" id="md" role="dialog" aria-modal="true"></div></div>
+<footer class="foot"><div class="wrap">Design demo with mock data. Listings on iGV are posted by independent sellers. Item names are used only to describe mock account contents; this demo is not affiliated with or endorsed by Epic Games. Contract protection applies only to listings that show the Contract Protected badge. Policy details marked “Demo” or “To be confirmed” are placeholders.</div></footer>
+
+<script>
+/* ================= DATA (mock) ================= */
+const RAR={legendary:'Legendary',epic:'Epic',rare:'Rare',uncommon:'Uncommon',series:'Series',common:'Common'};
+const TYPES={outfit:'Outfits',pickaxe:'Pickaxes',emote:'Emotes',backbling:'Back Blings',glider:'Gliders'};
+const ICON={
+ outfit:'<svg viewBox="0 0 24 24"><path d="M12 3a4.2 4.2 0 0 1 4.2 4.2c0 1.7-1 3.2-2.4 3.8 4 .6 6.2 3 6.2 7.2V21H4v-2.8c0-4.2 2.200-6.600 6.200-7.200A4.200 4.200 0 0 1 12 3z"/></svg>',
+ pickaxe:'<svg viewBox="0 0 24 24"><path d="M3 8c5-5 13-5 18 0-4-1.600-6.500-1.500-8 0l1.200 1.200-9.400 9.900-1.900-1.900 9.900-9.400L11.500 6.500C9.500 6 6.500 6.500 3 8z"/></svg>',
+ emote:'<svg viewBox="0 0 24 24"><path d="M9 4h10v3h-7v9.500A3.500 3.500 0 1 1 9 13.200z"/></svg>',
+ backbling:'<svg viewBox="0 0 24 24"><path d="M8 5a4 4 0 0 1 8 0h1a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3zm2 0h4a2 2 0 0 0-4 0zM7 12v2h10v-2z"/></svg>',
+ glider:'<svg viewBox="0 0 24 24"><path d="M2 12C4 6 8 3 12 3s8 3 10 9c-2-1.500-3.500-1.500-5 0-1.500-1.500-3.500-1.500-5 0-1.500-1.500-3.500-1.500-5 0-1.500-1.500-3-1.500-5 0zm9 1h2v6a2 2 0 0 1-4 0h2z"/></svg>'
+};
+// Notable items buyers search for most (order follows iGV hot-tag usage data)
+const NOTABLE=[
+ ['Black Knight','outfit','legendary',1],['Ikonik','outfit','epic',0],['Travis Scott','outfit','series',0],['Leviathan Axe','pickaxe','series',0],
+ ['Take The L','emote','rare',1],['Galaxy','outfit','epic',0],['Skull Trooper','outfit','epic',1],['Floss','emote','rare',1],
+ ['Renegade Raider','outfit','rare',1],['Wildcat','outfit','epic',0],['Ghoul Trooper','outfit','epic',1],['Wonder','outfit','epic',0],
+ ['The Reaper','outfit','legendary',1],['Elite Agent','outfit','epic',1],['Honor Guard','outfit','epic',0],['Blue Squire','outfit','rare',1],
+ ['Sparkle Specialist','outfit','epic',1],['Omega','outfit','legendary',0],['Merry Mint Axe','pickaxe','rare',0],['Royale Knight','outfit','rare',1],
+ ['Aerial Assault Trooper','outfit','rare',1],['Glow','outfit','epic',0],['Stealth Reflex','outfit','rare',0],['Dark Vertex','outfit','legendary',0],
+ ['Polo Prodigy','outfit','series',0],['Drift','outfit','legendary',0],['Midas','outfit','legendary',0],['Mako','glider','rare',1],['Black Shield','backbling','legendary',1]
+].map(([name,type,rar,og])=>({name,type,rar,og:!!og,notable:true}));
+const POOL={
+ outfit:['Aura','Crystal','Focus','Dynamo','Brite Bomber','Cuddle Team Leader','Raven','Rex','Tricera Ops','Dark Voyager','Ragnarok','Lynx','Peely','Fishstick','Skye','Meowscles','Catalyst','Sentinel','Rox','Calamity','Dire','Zenith','Carbide','Teknique','Valor','Love Ranger','Crackshot','Nog Ops','Red-Nosed Raider','Merry Marauder','Ginger Gunner','Recon Expert','Whiplash','Sun Strider','Bunny Brawler','Rabbit Raider','Rust Lord','Moonwalker','Mission Specialist','Havoc','Sub Commander','Trailblazer','Blue Team Leader','Rogue Agent','Wingman','Mogul Master'],
+ pickaxe:['Reaper','Raider\'s Revenge','AC/DC','Candy Axe','Rainbow Smash','Pick Squeak','Party Animal','Star Wand','Studded Axe','Driver','Vision'],
+ emote:['Orange Justice','Fresh','The Worm','Dab','Best Mates','Electro Shuffle','Hype','Boogie Down','Pony Up','Rambunctious','Scenario','Phone It In'],
+ backbling:['Red Shield','Royale Shield','Six String','Rust Bucket','Love Wings','Bright Bag','Cuddle Bow','Iron Cage'],
+ glider:['Aerial Assault One','Royale Dragon','Snowflake','Sir Glider the Brave','Get Down!','Cloud Strike']
+};
+const PRAR=['rare','uncommon','epic','rare','uncommon','legendary','epic','rare'];
+const SELLERS={
+ s1:{name:'LootLlamaStore',rating:99.4,orders:2140,since:2021,reviews:[['Account matched the listing. Email changed in 5 minutes.','3 days ago'],['Fast delivery, seller answered my questions.','1 week ago'],['One missing emote was refunded partly after I reported it.','3 weeks ago']]},
+ s2:{name:'OG_Vault',rating:98.7,orders:612,since:2022,reviews:[['Rare skins all there. Took 2 hours to deliver.','5 days ago'],['Good, but delivery was slower than stated.','2 weeks ago']]},
+ s3:{name:'StormCircleShop',rating:97.9,orders:385,since:2023,reviews:[['Works fine on PS5.','2 days ago'],['Cheap and instant.','6 days ago']]},
+ s4:{name:'TiltedTrader',rating:99.8,orders:4820,since:2020,reviews:[['Third account from this seller. No problems.','1 day ago'],['Exactly as described.','4 days ago'],['Support from seller was quick.','2 weeks ago']]},
+ s5:{name:'new_seller_0412',rating:100,orders:9,since:2026,reviews:[['Ok.','1 week ago']]},
+ s6:{name:'PickaxePete',rating:96.2,orders:158,since:2024,reviews:[['Account fine, seller slow to reply.','1 week ago'],['Got what I paid for.','1 month ago']]}
+};
+// id, price, notable items, counts{outfit,pickaxe,emote,backbling,glider}, vbucks, level, platforms linkable, originalEmail, emailType, stw, verified date|null, warranty days, delivery, seller, listed days ago, sellerNote
+const RAW=[
+ ['FN-20411',1450,['Renegade Raider','Aerial Assault Trooper','Black Knight','Mako','Black Shield','Take The L','Floss','Skull Trooper'],[212,148,190,121,96],2400,612,['PC'],true,'Outlook',true,'2026-11-12',30,'manual:2 hours','s2',3,'Season 1 account, played by me since 2017. I will stay available in order chat during transfer.'],
+ ['FN-20388',520,['Travis Scott','Ikonik','Galaxy','Wonder','Glow'],[70,44,61,40,28],900,231,['PSN','Xbox','Switch'],true,'Gmail',false,'2026-11-10',14,'instant','s4',5,'All exclusives on one account.'],
+ ['FN-20377',420,['Black Knight','Sparkle Specialist','Take The L','Black Shield','Blue Squire','Royale Knight'],[180,120,155,98,74],1350,480,['PSN','Xbox'],true,'Gmail',true,'2026-11-14',30,'instant','s4',1,''],
+ ['FN-20352',340,['Skull Trooper','Ghoul Trooper','Floss','The Reaper'],[150,95,130,82,60],300,402,['PC','Switch'],false,'Firstmail',false,'2026-11-09',14,'instant','s1',6,''],
+ ['FN-20349',289,['Black Knight','Black Shield','Omega','Drift'],[128,77,102,69,51],650,355,['PSN','Xbox'],true,'Gmail',false,'2026-11-13',14,'instant','s1',2,''],
+ ['FN-20333',230,['Honor Guard','Sparkle Specialist','The Reaper','Take The L'],[110,71,96,58,44],150,298,['PC'],false,'Outlook',false,'2026-11-08',7,'instant','s3',7,''],
+ ['FN-20321',210,['Midas','Drift','Omega','Dark Vertex'],[402,260,318,240,170],13500,890,['PSN','Xbox','Switch'],true,'Gmail',true,'2026-11-15',14,'instant','s4',0,'Big locker, mostly Chapter 2 onward. No Season 1–3 exclusives.'],
+ ['FN-20305',175,['Leviathan Axe','Galaxy','Midas'],[96,66,80,52,38],500,244,['Xbox','Switch'],true,'Gmail',false,'2026-11-11',14,'instant','s1',4,''],
+ ['FN-20298',120,['Elite Agent','Blue Squire','Royale Knight','Floss'],[75,48,66,39,30],0,210,['PSN'],false,'Rambler',false,null,14,'manual:12 hours','s6',9,'SEASON 2 OG!!! FULL ACCESS!!! Message me before buying.'],
+ ['FN-20290',95,['Galaxy'],[20,11,18,9,7],200,84,['PSN','Xbox','Switch'],true,'Gmail',false,'2026-11-13',7,'instant','s3',2,''],
+ ['FN-20284',84,['Travis Scott','Wildcat'],[45,29,37,22,15],0,133,['PSN'],false,'Outlook',false,null,7,'instant','s5',1,'cheap travis acc'],
+ ['FN-20277',74,['Omega','Drift'],[88,57,70,45,33],800,205,['PC','PSN'],false,'Firstmail',false,'2026-11-07',7,'instant','s3',8,''],
+ ['FN-20270',69,['Wildcat'],[25,14,20,12,8],100,96,['PSN','Xbox'],true,'Gmail',false,'2026-11-12',7,'instant','s1',3,'Switch slot is already used; PSN and Xbox are free to link.'],
+ ['FN-20263',66,['Merry Mint Axe','Polo Prodigy','Dark Vertex'],[40,31,34,20,14],350,120,['PC','Xbox'],false,'Outlook',false,'2026-11-10',7,'instant','s6',5,''],
+ ['FN-20255',58,['Take The L','Floss'],[60,35,88,30,21],0,170,['PC'],false,'Rambler',false,null,7,'manual:6 hours','s6',11,''],
+ ['FN-20249',39,['Ikonik'],[12,6,9,5,4],0,41,['PSN','Xbox','Switch'],true,'Gmail',false,'2026-11-14',7,'instant','s4',1,''],
+ ['FN-20241',32,['Wonder'],[8,4,6,3,3],0,27,['PSN','Xbox'],false,'Outlook',false,null,7,'instant','s5',2,''],
+ ['FN-20236',27,[],[30,18,22,14,10],1200,140,['PC','PSN','Xbox'],true,'Gmail',true,null,7,'instant','s3',4,'Save the World founder access. No rare Battle Royale items.'],
+ ['FN-20228',22,['Glow','Stealth Reflex'],[15,8,11,6,5],0,52,['PSN'],false,'Firstmail',false,null,7,'manual:6 hours','s6',6,''],
+ ['FN-20220',9,[],[5,3,4,2,2],1000,18,['PC','PSN','Xbox','Switch'],true,'Gmail',false,null,7,'instant','s3',0,'Fresh account with 1,000 V-Bucks.']
+];
+function seeded(seed){let s=seed;return()=>(s=(s*9301+49297)%233280)/233280}
+const ACC=RAW.map((r,i)=>{
+  const [id,price,nn,c,vbucks,level,plat,origEmail,emailType,stw,vdate,warranty,delivery,seller,age,note]=r;
+  const counts={outfit:c[0],pickaxe:c[1],emote:c[2],backbling:c[3],glider:c[4]};
+  const notable=nn.map(n=>NOTABLE.find(x=>x.name===n));
+  const rnd=seeded(i*77+13); const locker=[...notable];
+  for(const t in POOL){
+    const have=notable.filter(x=>x.type===t).length;
+    const pool=[...POOL[t]].sort(()=>rnd()-.5).slice(0,Math.max(0,Math.min(POOL[t].length,counts[t]-have)));
+    pool.forEach((n,k)=>locker.push({name:n,type:t,rar:PRAR[(k+i)%PRAR.length],og:false}));
+  }
+  const og=notable.some(x=>x.og&&x.type==='outfit');
+  const kinds=[]; if(og)kinds.push('OG account'); if(counts.outfit>=150)kinds.push('Mega stacked'); if(notable.length&&!og)kinds.push('Rare skins'); if(!notable.length)kinds.push('Starter');
+  const top=notable.slice(0,3).map(x=>x.name);
+  const title=(top.length?top.join(' + '):(stw?'Save the World account':'Starter account'))+' · '+counts.outfit+' outfits';
+  return {id,price,notable,counts,vbucks,level,plat,origEmail,emailType,stw,vdate,verified:!!vdate,warranty,delivery,instant:delivery==='instant',eta:delivery.split(':')[1]||'',seller,age,note,locker,kinds,title,og};
+});
+// Contract protection is rolling out in batches: only some SKUs support it (mock assignment)
+const CONTRACT=new Set(['FN-20411','FN-20388','FN-20377','FN-20349','FN-20321','FN-20305','FN-20290','FN-20270','FN-20249','FN-20298','FN-20236']);
+ACC.forEach(a=>a.contract=CONTRACT.has(a.id));
+const CICON='<svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v8.300a5.500 5.500 0 0 0-2-.900V8h-4V4H8v16h4.300c.300.700.700 1.400 1.200 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm3 8h6v2H9zm0 4h4v2H9zm8.500 2a3.500 3.500 0 1 1 0 7 3.500 3.500 0 0 1 0-7zm-.600 5.200l2.400-2.400-.900-.900-1.500 1.500-.700-.700-.900.900z"/></svg>';
+const cbadge=(lg)=>`<span class="cb${lg?' lg':''}" title="The seller and buyer both sign a contract for this sale">${CICON}<span>Contract Protected</span></span>`;
+const HOT=NOTABLE.slice(0,12).map(x=>x.name);
+const FEES=[['Card','card',4.5],['PayPal','paypal',5.9],['Crypto','crypto',1.0]]; // demo values
+
+/* ================= STATE ================= */
+const S={items:[],text:'',kind:new Set(),plat:new Set(),contract:false,verified:false,orig:false,instant:false,stw:false,warranty:0,pmin:'',pmax:'',omin:'',sort:'best',compare:[],viewed:new Set(),scroll:0,last:[]};
+const $=s=>document.querySelector(s), app=$('#app');
+const money=n=>'$'+n.toLocaleString('en-US',{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const tick='<svg viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.400 9.300-8 11-4.600-1.700-8-6-8-11V5zm-1.200 13.600l6-6-1.500-1.500-4.500 4.500-2.200-2.200-1.500 1.500z"/></svg>';
+function tile(it,cls=''){return `<div class="tile ${cls}" style="--c:var(--r-${it.rar})" title="${esc(it.name)} — ${RAR[it.rar]} ${TYPES[it.type].slice(0,-1).toLowerCase()}"><div class="art">${ICON[it.type]}</div><div class="nm">${esc(it.name)}</div></div>`}
+
+/* ================= FILTER + SORT ================= */
+function matches(a){
+  if(S.items.some(n=>!a.locker.some(x=>x.name===n)))return false;
+  if(S.text&&!a.locker.some(x=>x.name.toLowerCase().includes(S.text))&&!a.title.toLowerCase().includes(S.text))return false;
+  if(S.kind.size&&![...S.kind].some(k=>a.kinds.includes(k)))return false;
+  if(S.plat.size&&![...S.plat].every(p=>a.plat.includes(p)))return false;
+  if(S.contract&&!a.contract)return false;
+  if(S.verified&&!a.verified)return false;
+  if(S.orig&&!a.origEmail)return false;
+  if(S.instant&&!a.instant)return false;
+  if(S.stw&&!a.stw)return false;
+  if(a.warranty<S.warranty)return false;
+  if(S.pmin!==''&&a.price<+S.pmin)return false;
+  if(S.pmax!==''&&a.price>+S.pmax)return false;
+  if(S.omin!==''&&a.counts.outfit<+S.omin)return false;
+  return true;
+}
+function bestScore(a){const s=SELLERS[a.seller];return (a.contract?9:0)+(a.verified?30:0)+(s.rating-95)*4+Math.min(20,Math.log10(s.orders+1)*6)+(a.origEmail?8:0)+Math.max(0,10-a.age)}
+const SORTS={best:['Best match',(a,b)=>bestScore(b)-bestScore(a)],low:['Price: low to high',(a,b)=>a.price-b.price],high:['Price: high to low',(a,b)=>b.price-a.price],outfits:['Most outfits',(a,b)=>b.counts.outfit-a.counts.outfit],warranty:['Longest warranty',(a,b)=>b.warranty-a.warranty||bestScore(b)-bestScore(a)],new:['Newest listed',(a,b)=>a.age-b.age]};
+function results(){return ACC.filter(matches).sort(SORTS[S.sort][1])}
+function count(fn){return ACC.filter(fn).length}
+
+/* ================= LISTING ================= */
+function renderList(){
+  const res=results(); S.last=res.map(a=>a.id);
+  const cb=(k,label,n)=>`<label><input type="checkbox" data-f="${k}" ${S[k]?'checked':''}>${label}<em>${n}</em></label>`;
+  const set=(grp,v,label,n)=>`<label><input type="checkbox" data-set="${grp}" value="${v}" ${S[grp].has(v)?'checked':''}>${label}<em>${n}</em></label>`;
+  const chips=[];
+  S.items.forEach(n=>chips.push([`Has ${n}`,`item:${n}`]));
+  if(S.text)chips.push([`“${S.text}”`,'text']);
+  S.kind.forEach(v=>chips.push([v,`kind:${v}`])); S.plat.forEach(v=>chips.push([`Links to ${v}`,`plat:${v}`]));
+  if(S.contract)chips.push(['Contract Protected','contract']); if(S.verified)chips.push(['iGV Verified','verified']); if(S.orig)chips.push(['Original email included','orig']);
+  if(S.instant)chips.push(['Instant delivery','instant']); if(S.stw)chips.push(['Save the World','stw']);
+  if(S.warranty)chips.push([`Warranty ${S.warranty}+ days`,'warranty']);
+  if(S.pmin!==''||S.pmax!=='')chips.push([`${S.pmin!==''?money(+S.pmin):'$0'} – ${S.pmax!==''?money(+S.pmax):'any'}`,'price']);
+  if(S.omin!=='')chips.push([`${S.omin}+ outfits`,'omin']);
+  app.innerHTML=`<div class="wrap">
+  <section class="head">
+    <div class="crumb">Home / All games / Fortnite / Accounts</div>
+    <h1 class="disp">Fortnite accounts</h1>
+    <p class="sub">${ACC.length} accounts listed by independent sellers. Every listing uses the same fields, so you can search by the items you want and compare accounts side by side.
+      <button class="linkbtn" data-open="protect">How buying on iGV is protected</button></p>
+    <div class="finder" data-note="① 核心入口：按物品名找账号。数据依据：关键词搜索与热门物品标签是 Fortnite 买家使用最多的两种检索方式（原则一：可比较；筛选维度=购买理由）">
+      <label for="q">Which items do you want on the account?</label>
+      <div class="fbox">${S.items.map(n=>`<span class="pick">${esc(n)}<button aria-label="Remove ${esc(n)}" data-rm="item:${esc(n)}">×</button></span>`).join('')}
+        <input id="q" autocomplete="off" placeholder="${S.items.length?'Add another item':'Type a skin, pickaxe or emote — e.g. Black Knight'}" value="${esc(S.text)}">
+        <div class="sugg" id="sugg" hidden></div></div>
+      <div class="hot"><span>Most searched:</span>${HOT.map(n=>`<button class="chip" aria-pressed="${S.items.includes(n)}" data-hot="${esc(n)}">${esc(n)}</button>`).join('')}</div>
+    </div>
+    <div class="cstrip" data-note="⑯ 合同保障的发现入口：一句主张 + 一句带前提的说明 + 筛选开关。位置在物品查找器之后，不抢主入口（列表页负责识别与筛选，解释留给详情页）">
+      ${cbadge(true)}<span class="tl">Beyond warranty. Protected by contract.</span>
+      <p>On these accounts the seller and you both sign a contract for the sale. If a problem appears after the warranty ends and iGV finds the seller responsible, iGV pursues the seller under that contract and makes sure you are compensated. <button class="linkbtn" data-open="contract">How it works</button></p>
+      <label class="sw"><input type="checkbox" data-f="contract" ${S.contract?'checked':''}><i></i>Only Contract Protected <span style="color:var(--dim)">(${count(a=>a.contract)} of ${ACC.length})</span></label>
+    </div>
+  </section>
+  <div class="cols">
+    <aside class="rail" data-note="② 筛选项只保留能淘汰账号的条件，顺序按「能不能用 → 是不是我要的 → 风险」排列（第六章决策路径 2、4 阶段）">
+      <h3>Can I use it?</h3>
+      <p class="hint">Platforms you can still link to this account</p>
+      ${['PSN','Xbox','Switch','PC'].map(p=>set('plat',p,p,count(a=>a.plat.includes(p)))).join('')}
+      <h3>Account type</h3>
+      ${['OG account','Mega stacked','Rare skins','Starter'].map(k=>set('kind',k,k,count(a=>a.kinds.includes(k)))).join('')}
+      <p class="hint">OG = has Chapter 1 Season 1–4 outfits. Mega stacked = 150+ outfits. Set by iGV rules from listing data, not by sellers.<span class="demo">Demo rule</span></p>
+      <h3>Size and budget</h3>
+      <div class="rng"><input type="number" min="0" placeholder="Min $" data-n="pmin" value="${S.pmin}"><span>–</span><input type="number" min="0" placeholder="Max $" data-n="pmax" value="${S.pmax}"></div>
+      <div class="rng" style="margin-top:6px"><input type="number" min="0" placeholder="Min outfits" data-n="omin" value="${S.omin}"></div>
+      <h3>Risk and ownership</h3>
+      ${cb('contract','Contract Protected',count(a=>a.contract))}
+      ${cb('verified','iGV Verified contents',count(a=>a.verified))}
+      ${cb('orig','Original email included',count(a=>a.origEmail))}
+      <label style="display:block">Warranty at least
+        <select data-sel="warranty">${[0,7,14,30].map(d=>`<option value="${d}" ${S.warranty==d?'selected':''}>${d?d+' days':'Any length'}</option>`).join('')}</select></label>
+      <h3>Delivery and extras</h3>
+      ${cb('instant','Instant delivery',count(a=>a.instant))}
+      ${cb('stw','Includes Save the World',count(a=>a.stw))}
+      <button class="btn ghost sm" style="margin-top:12px;width:100%" data-clear>Clear all filters</button>
+    </aside>
+    <section>
+      <div class="bar" data-note="③ 排序：价格升序是使用率最高的排序（约 14% 列表 UV），价格降序次之（约 9%），均保留；新增「最多皮肤」「最长保障」对应可比较属性。Best match 中合同保障有小幅加权，仅在其他条件相近时前置">
+        <span class="cnt">${res.length} account${res.length==1?'':'s'}</span><span class="sp" style="flex:1"></span>
+        <label for="sort" style="font-size:13px;color:var(--mist)">Sort by</label>
+        <select id="sort">${Object.entries(SORTS).map(([k,v])=>`<option value="${k}" ${S.sort==k?'selected':''}>${v[0]}</option>`).join('')}</select>
+        <button class="linkbtn" data-open="rank" style="font-size:13px">How Best match works</button>
+      </div>
+      ${chips.length?`<div class="act">${chips.map(c=>`<button class="chip" data-rm="${esc(c[1])}">${esc(c[0])} ×</button>`).join('')}</div>`:''}
+      ${res.length?res.map(rowHTML).join(''):emptyHTML()}
+    </section>
+  </div></div>`;
+  renderTray();
+}
+function rowHTML(a,i){
+  const s=SELLERS[a.seller];
+  // show searched items first, then other notable, then filler
+  const want=S.items.map(n=>a.locker.find(x=>x.name===n)).filter(Boolean);
+  const textHit=S.text?a.locker.filter(x=>x.name.toLowerCase().includes(S.text)&&!want.includes(x)).slice(0,2):[];
+  const rest=[...a.notable,...a.locker.filter(x=>!x.notable)].filter(x=>!want.includes(x)&&!textHit.includes(x));
+  const show=[...want,...textHit,...rest].slice(0,3);
+  const more=a.locker.length>3?Object.values(a.counts).reduce((x,y)=>x+y,0)-3:0;
+  const top=a.notable[0]?a.notable[0].rar:'common';
+  const note=i===0?` data-note="④ 商品行而非卡片：所有账号的同一指标纵向对齐，可直接上下比较。标题由平台按结构化字段生成，不使用卖家标题（原则一、原则六）"`:'';
+  return `<article class="row" style="--rc:var(--r-${top})"${note}>
+    <button class="hit" data-go="${a.id}" aria-label="View ${esc(a.title)}"></button>
+    <div class="tiles">${show.map(x=>tile(x,want.includes(x)||textHit.includes(x)?'match':'')).join('')}${more>0?`<div class="tile more"><div class="art">+${more}</div><div class="nm">more items</div></div>`:''}</div>
+    <div class="hd"><h2 class="rtitle">${esc(a.title)}</h2>
+      <div class="tags">${S.items.map(n=>`<span class="tag has">Has ${esc(n)}</span>`).join('')}${a.kinds.map(k=>`<span class="tag ${k[0]=='O'?'og':''}">${k}</span>`).join('')}${a.stw?'<span class="tag">Save the World</span>':''}${a.origEmail?'<span class="tag">Original email</span>':''}</div>
+      <div class="plat">Can link: <b>${a.plat.join(', ')}</b></div></div>
+    <div class="stats"><div><b>${a.counts.outfit}</b><span>Outfits</span></div><div><b>${a.counts.pickaxe}</b><span>Pickaxes</span></div><div><b>${a.counts.emote}</b><span>Emotes</span></div><div><b>${a.vbucks.toLocaleString()}</b><span>V-Bucks</span></div></div>
+    <div class="trust">${a.contract?`<span>${cbadge()}</span>`:''}<span>${a.warranty}-day warranty${a.contract?' + contract':''}</span><span class="vf ${a.verified?'':'no'}">${a.verified?tick+'iGV Verified':'Seller-described'}</span><span>${esc(s.name)} · ${s.rating}% (${s.orders.toLocaleString()})</span><span>${a.instant?'Instant delivery':'Delivery within '+a.eta}</span></div>
+    <div class="price"><b>${money(a.price)}</b>
+      <label class="cmp z"><input type="checkbox" data-cmp="${a.id}" ${S.compare.includes(a.id)?'checked':''}>Compare</label>
+      ${S.viewed.has(a.id)?'<span class="seen">Viewed</span>':''}</div>
+  </article>`;
+}
+function emptyHTML(){
+  // suggest which single condition to drop
+  const tries=[];
+  const test=(label,fn)=>{const keep=JSON.stringify([S.items,S.text,[...S.kind],[...S.plat],S.contract,S.verified,S.orig,S.instant,S.stw,S.warranty,S.pmin,S.pmax,S.omin]);fn();const n=ACC.filter(matches).length;const b=JSON.parse(keep);[S.items,S.text]=[b[0],b[1]];S.kind=new Set(b[2]);S.plat=new Set(b[3]);[S.contract,S.verified,S.orig,S.instant,S.stw,S.warranty,S.pmin,S.pmax,S.omin]=b.slice(4);if(n)tries.push([label,n])};
+  S.items.forEach(n=>test(`item:${n}|Remove “${n}”`,()=>S.items=S.items.filter(x=>x!==n)));
+  if(S.plat.size)test('platAll|Remove platform filter',()=>S.plat=new Set());
+  if(S.contract)test('contract|Include accounts without contract protection',()=>S.contract=false);
+  if(S.verified)test('verified|Include seller-described accounts',()=>S.verified=false);
+  if(S.orig)test('orig|Include accounts without original email',()=>S.orig=false);
+  if(S.warranty)test('warranty|Any warranty length',()=>S.warranty=0);
+  if(S.pmin!==''||S.pmax!=='')test('price|Any price',()=>{S.pmin='';S.pmax=''});
+  if(S.kind.size)test('kindAll|Any account type',()=>S.kind=new Set());
+  return `<div class="empty"><h3 class="disp">No account matches all of that</h3><p>Loosen one condition to see accounts again:</p><div class="act" style="justify-content:center">${tries.map(t=>{const[k,l]=t[0].split('|');return `<button class="chip" data-rm="${esc(k)}">${esc(l)} → ${t[1]} account${t[1]>1?'s':''}</button>`}).join('')||''}<button class="chip" data-clear>Clear all filters</button></div></div>`;
+}
+function rm(key){
+  const [k,v]=key.split(/:(.*)/);
+  if(k==='item')S.items=S.items.filter(x=>x!==v); else if(k==='text')S.text=''; else if(k==='kind')S.kind.delete(v); else if(k==='plat')S.plat.delete(v);
+  else if(k==='platAll')S.plat=new Set(); else if(k==='kindAll')S.kind=new Set(); else if(k==='warranty')S.warranty=0; else if(k==='price'){S.pmin='';S.pmax=''} else if(k==='omin')S.omin=''; else S[k]=false;
+}
+function clearAll(){Object.assign(S,{items:[],text:'',kind:new Set(),plat:new Set(),contract:false,verified:false,orig:false,instant:false,stw:false,warranty:0,pmin:'',pmax:'',omin:''})}
+function suggest(v){
+  const box=$('#sugg'); if(!box)return; v=v.trim().toLowerCase();
+  if(!v){box.hidden=true;return}
+  const all=[...NOTABLE,...Object.entries(POOL).flatMap(([t,ns])=>ns.map(n=>({name:n,type:t,rar:'rare'})))];
+  const hits=all.filter(x=>x.name.toLowerCase().includes(v)&&!S.items.includes(x.name)).slice(0,7);
+  box.innerHTML=hits.map((x,i)=>{const n=ACC.filter(a=>a.locker.some(y=>y.name===x.name)).length;return `<button data-add="${esc(x.name)}" class="${i?'':'on'}"><span class="dot" style="background:var(--r-${x.rar})"></span>${esc(x.name)}<i>${TYPES[x.type].slice(0,-1)} · ${n} account${n==1?'':'s'}</i></button>`}).join('')||`<button data-freetext>Search listings for “${esc(v)}”</button>`;
+  box.hidden=false;
+}
+
+/* ================= COMPARE ================= */
+function renderTray(){
+  const t=$('#tray'); t.classList.toggle('on',S.compare.length>0);
+  $('#trayIn').innerHTML=`<b>Compare (${S.compare.length}/3)</b>${S.compare.map(id=>{const a=ACC.find(x=>x.id===id);return `<span class="it">${esc(a.title.split(' · ')[0])} · ${money(a.price)}<button aria-label="Remove" data-uncmp="${id}">×</button></span>`}).join('')}<span style="flex:1"></span><button class="btn ghost sm" data-cmpclear>Clear</button><button class="btn y" ${S.compare.length<2?'disabled style="opacity:.5"':''} data-open="compare"><span>Compare now</span></button>`;
+}
+function toggleCmp(id,on){
+  if(on){if(S.compare.length>=3){toast('You can compare up to 3 accounts. Remove one first.');return false}S.compare.push(id)}else S.compare=S.compare.filter(x=>x!==id);
+  renderTray();return true;
+}
+function compareHTML(){
+  const as=S.compare.map(id=>ACC.find(a=>a.id===id));
+  const best=(fn,max=true)=>{const v=as.map(fn);const b=max?Math.max(...v):Math.min(...v);return v.map(x=>x===b&&v.filter(y=>y===b).length<v.length)};
+  const row=(label,fn,b)=>`<tr><th>${label}</th>${as.map((a,i)=>`<td class="${b&&b[i]?'best':''}">${fn(a)}</td>`).join('')}</tr>`;
+  const allNames=[...new Set(as.flatMap(a=>a.notable.map(x=>x.name)))];
+  return `<button class="x" data-close aria-label="Close">×</button><h2 class="disp">Compare accounts</h2>
+  <table class="ct"><tr><th></th>${as.map(a=>`<td><b>${esc(a.title)}</b><br><button class="linkbtn" data-go="${a.id}">View account</button></td>`).join('')}</tr>
+  ${row('Price',a=>money(a.price),best(a=>a.price,false))}
+  ${row('Outfits',a=>a.counts.outfit,best(a=>a.counts.outfit))}${row('Pickaxes',a=>a.counts.pickaxe,best(a=>a.counts.pickaxe))}${row('Emotes',a=>a.counts.emote,best(a=>a.counts.emote))}${row('V-Bucks',a=>a.vbucks.toLocaleString(),best(a=>a.vbucks))}
+  ${row('Price per outfit',a=>money(Math.round(a.price/a.counts.outfit*100)/100),best(a=>a.price/a.counts.outfit,false))}
+  ${allNames.map(n=>row(n,a=>a.notable.some(x=>x.name===n)?'<span style="color:var(--ok)">✓ Included</span>':'<span style="color:var(--dim)">—</span>')).join('')}
+  ${row('Contents checked by',a=>a.verified?'iGV system, '+a.vdate:'Seller only')}
+  ${row('Contract protection',a=>a.contract?cbadge():'<span style="color:var(--dim)">Not available</span>')}
+  ${row('Warranty',a=>a.warranty+' days',best(a=>a.warranty))}
+  ${row('Original email',a=>a.origEmail?'Included':'Not included')}
+  ${row('Can link',a=>a.plat.join(', '))}
+  ${row('Delivery',a=>a.instant?'Instant':'Within '+a.eta)}
+  ${row('Seller',a=>{const s=SELLERS[a.seller];return `${esc(s.name)}<br>${s.rating}% · ${s.orders.toLocaleString()} orders`})}
+  </table><p class="hint" style="margin-top:10px">Yellow marks the better value on a row. Rows where all accounts are equal are not marked.</p>`;
+}
+
+/* ================= DETAIL ================= */
+let L={tab:'outfit',rar:'',q:'',all:false};
+function renderDetail(id){
+  const a=ACC.find(x=>x.id===id); if(!a){location.hash='#/';return}
+  S.viewed.add(id); const s=SELLERS[a.seller];
+  const list=S.last.length?S.last:ACC.map(x=>x.id); const pos=list.indexOf(id);
+  const prev=pos>0?list[pos-1]:null, next=pos>-1&&pos<list.length-1?list[pos+1]:null;
+  const src=a.verified?`<span class="src">${tick.replace('<svg','<svg width="12" height="12" fill="currentColor"')}Read by iGV</span>`:`<span class="src s">Seller-stated</span>`;
+  const srcS=`<span class="src s">Seller-stated</span>`;
+  const heroes=a.notable.length?a.notable:a.locker.slice(0,4);
+  const total=Object.values(a.counts).reduce((x,y)=>x+y,0);
+  const sim=ACC.filter(x=>x.id!==a.id&&(S.items.length?S.items.every(n=>x.locker.some(y=>y.name===n)):x.notable.some(n=>a.notable.includes(n))||Math.abs(x.price-a.price)<a.price*.4)).sort((x,y)=>Math.abs(x.price-a.price)-Math.abs(y.price-a.price)).slice(0,3);
+  const wEnd=new Date(Date.now()+a.warranty*864e5).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  app.innerHTML=`<div class="wrap">
+  <div class="dback" data-note="⑧ 返回保留筛选与滚动位置；可在当前结果集内前后切换（7.4 上下文保留、否定有出路）">
+    <button class="btn ghost sm" data-back>← Back to results</button>
+    ${pos>-1?`<span class="pos">Account ${pos+1} of ${list.length} in your results</span>`:''}
+    <span style="flex:1"></span>
+    <button class="btn ghost sm" ${prev?`data-go="${prev}"`:'disabled style="opacity:.4"'}>Previous account</button>
+    <button class="btn ghost sm" ${next?`data-go="${next}"`:'disabled style="opacity:.4"'}>Next account</button>
+  </div>
+  <div class="dgrid">
+   <div>
+    <div class="dhead"><div class="crumb">Fortnite / Accounts / ${a.id}</div>
+      <h1 class="disp">${esc(a.title)}</h1>
+      <div class="tags">${S.items.map(n=>`<span class="tag ${a.locker.some(x=>x.name===n)?'has':'miss'}">${a.locker.some(x=>x.name===n)?'Has':'Does not have'} ${esc(n)}</span>`).join('')}${a.kinds.map(k=>`<span class="tag ${k[0]=='O'?'og':''}">${k}</span>`).join('')}<span class="tag">Can link: ${a.plat.join(', ')}</span>${a.contract?cbadge():''}</div>
+    </div>
+    <nav class="anch" aria-label="On this page"><a href="#s-get" data-anch>What you get</a><a href="#s-ver" data-anch>What was checked</a><a href="#s-own" data-anch>Ownership</a><a href="#s-pro" data-anch>Warranty</a><a href="#s-con" data-anch>${a.contract?'Contract':'After warranty'}</a><a href="#s-sel" data-anch>Seller</a><a href="#s-after" data-anch>After you pay</a></nav>
+
+    <section class="sec" id="s-get" data-note="⑨ 第一屏先确认「我点对了」与最值钱的部分，再给完整储物柜。对应详情页优先级 1–3">
+      <h2 class="disp">What you get</h2>
+      <p class="lead">${a.notable.length?`The ${a.notable.length} item${a.notable.length>1?'s':''} below ${a.notable.length>1?'are':'is'} what most buyers look for on this account.`:'This account has no items from the most-searched list. Its value is in the totals below.'}</p>
+      <div class="heroes">${heroes.map(x=>tile(x,'big')).join('')}</div>
+      <div class="kv">
+        ${Object.entries(a.counts).map(([t,n])=>`<div><b>${n}</b><span>${TYPES[t]}</span><br>${src}</div>`).join('')}
+        <div><b>${a.vbucks.toLocaleString()}</b><span>V-Bucks</span><br>${src}</div>
+        <div><b>${a.level}</b><span>Account level</span><br>${src}</div>
+        <div><b>${a.stw?'Yes':'No'}</b><span>Save the World</span><br>${src}</div>
+      </div>
+      <h3 style="margin:18px 0 0;font-size:16px">Full locker <span style="color:var(--dim);font-weight:400">(${total} items)</span></h3>
+      <div class="ltabs" role="tablist">${Object.entries(TYPES).map(([t,l])=>`<button role="tab" data-ltab="${t}" aria-selected="${L.tab===t}">${l} ${a.counts[t]}</button>`).join('')}</div>
+      <div class="ltools"><input id="lq" placeholder="Find an item in this locker" value="${esc(L.q)}">
+        <select id="lrar"><option value="">All rarities</option>${Object.entries(RAR).map(([k,v])=>`<option value="${k}" ${L.rar===k?'selected':''}>${v}</option>`).join('')}</select></div>
+      <div id="locker"></div>
+      <h3 style="margin:18px 0 0;font-size:16px">Locker screenshots</h3>
+      <p class="hint">${a.verified?'Captured by the iGV system when the account was checked.':'Uploaded by the seller. iGV has not checked these.'}<span class="demo">Demo placeholders</span></p>
+      <div class="shots">${[1,2,3,4].map(i=>`<button class="shot" data-shot="${i}" aria-label="Open screenshot ${i}"><span>${['Outfits page 1','Outfits page 2','Pickaxes','Emotes'][i-1]}</span></button>`).join('')}</div>
+    </section>
+
+    <section class="sec" id="s-ver" data-note="⑩ 平台核验与卖家自述明确分开：逐项标注来源与时间，不用「100% 真实」（原则三）">
+      <h2 class="disp">${a.verified?'Checked by iGV':'Not checked by iGV'}</h2>
+      ${a.verified?`<p class="lead">On ${a.vdate} the iGV system signed in to this account and read its contents. The seller did not type these values.</p>
+      <div class="two"><div class="box ok"><h4>Read from the account by iGV</h4><ul><li>Item counts and the full locker list</li><li>V-Bucks balance and account level</li><li>Save the World access</li></ul></div>
+      <div class="box wn"><h4>Stated by the seller, not checked</h4><ul><li>Which platforms can still be linked</li><li>Email provider and whether the original email is included</li><li>The seller’s notes at the bottom of this page</li></ul></div></div>
+      <p class="hint" style="margin-top:8px">A seller could change the account after the check. If what you receive differs from this page, that is covered as “not as described”.</p>`
+      :`<p class="lead">The seller entered everything on this page. iGV has not signed in to this account or confirmed its contents.</p>
+      <div class="box wn"><h4>What this means for you</h4><ul><li>Check the locker against this page as soon as you receive the account.</li><li>If something is missing, report it inside the warranty period. “Not as described” is covered.</li><li>Prefer to skip the risk? <button class="linkbtn" data-verifiedonly>Show only iGV Verified accounts</button></li></ul></div>`}
+    </section>
+
+    <section class="sec" id="s-own" data-note="⑪ 过户完整性单独成段：直接回应头号恐惧「账号被找回」（详情页优先级 4）">
+      <h2 class="disp">Will it be fully yours?</h2>
+      <p class="lead">An account can be taken back by whoever controls its original email. These are the access details the seller hands over.</p>
+      <div class="chk">
+        <span class="${a.origEmail?'y':'n'}">${a.origEmail?'✓':'!'}</span><span>${a.origEmail?'Original registration email is included, with its login':'Original registration email is not included. The seller says the Epic email can be changed to yours.'}</span>${srcS}
+        <span class="y">✓</span><span>Email provider: ${a.emailType}</span>${srcS}
+        <span class="y">✓</span><span>Epic email and password can be changed to yours</span>${srcS}
+        <span class="${a.plat.length>=3?'y':'n'}">${a.plat.length>=3?'✓':'!'}</span><span>Can still be linked to: ${a.plat.join(', ')}${['PSN','Xbox','Switch','PC'].filter(p=>!a.plat.includes(p)).length?'. Not available: '+['PSN','Xbox','Switch','PC'].filter(p=>!a.plat.includes(p)).join(', '):''}</span>${srcS}
+      </div>
+      ${a.origEmail?'':'<p class="hint" style="margin-top:10px">Accounts without the original email carry a higher take-back risk. The warranty below covers take-back while it lasts.</p>'}
+    </section>
+
+    <section class="sec" id="s-pro" data-note="⑫ 保障按「覆盖什么、多久、怎么申请、退到哪、期后怎么办」表达；未确认条款标注 Demo（原则四）">
+      <h2 class="disp">${a.warranty}-day warranty on this account</h2>
+      <p class="lead">Starts when the account is delivered. If you buy today it runs until ${wEnd}. iGV decides disputes; sellers cannot add their own refund conditions.</p>
+      <div class="two">
+        <div class="box ok"><h4>Covered during the ${a.warranty} days</h4><ul><li>The account is taken back and you lose access</li><li>The account is banned</li><li>The account does not match this page</li></ul><p class="hint">Approved refunds go back to your original payment method.</p></div>
+        <div class="box"><h4>What you need to claim</h4><ul><li>The account’s current login details</li><li>Screenshots showing the problem</li><li>Any emails from Epic Games about the account</li></ul><p class="hint">Open the claim from your order page. iGV reviews the evidence from both sides.</p></div>
+      </div>
+      <div class="box ${a.contract?'':'wn'}" style="margin-top:12px"><h4>After the ${a.warranty} days</h4><p style="margin:0">The seller has been paid and there is no dispute button on the order. ${a.contract?'This account is Contract Protected, so there is still a route: <a href="#s-con" data-anch>see what the contract adds</a>.':'You can still contact iGV support, who will review the case. A refund is not guaranteed at that point, and this listing is not covered by a contract.'}</p></div>
+      <p class="hint" style="margin-top:8px">Exclusions (for example bans caused by the buyer’s own actions) are not yet confirmed for this demo.<span class="demo">To be confirmed</span></p>
+    </section>
+
+    ${a.contract?contractSec(a):noContractSec(a)}
+
+    <section class="sec" id="s-sel">
+      <h2 class="disp">Seller</h2>
+      <div class="kv" style="margin-top:6px"><div><b>${s.rating}%</b><span>Positive ratings</span></div><div><b>${s.orders.toLocaleString()}</b><span>Fortnite account orders</span></div><div><b>${s.since}</b><span>Selling on iGV since</span></div></div>
+      <p style="margin:12px 0 4px"><b>${esc(s.name)}</b>${s.orders<50?' · <span style="color:var(--warn)">New seller with few completed orders</span>':''}</p>
+      ${s.reviews.map(r=>`<div class="rev">${esc(r[0])}<br><span>Verified buyer · ${r[1]}</span></div>`).join('')}
+      <p class="hint">Seller figures are mock data.<span class="demo">Demo</span></p>
+    </section>
+
+    <section class="sec" id="s-after" data-note="⑬ 付款前就说明收货后的动作，减少过早确认与操作不当（原则七）">
+      <h2 class="disp">After you pay</h2>
+      <ol class="steps">
+        <li><div><b>${a.instant?'Login details arrive within minutes':'The seller delivers within '+a.eta}</b><br>Sent to your iGV order page and your email. iGV holds your payment; the seller is not paid yet.</div></li>
+        <li><div><b>Sign in and check the locker against this page</b><br>Look for the key items first${a.notable.length?': '+a.notable.slice(0,3).map(x=>x.name).join(', '):''}.</div></li>
+        <li><div><b>Make it yours</b><br>Change the password, set the email to your own, turn on two-factor sign-in, and link your console.</div></li>
+        <li><div><b>Confirm, or report a problem</b><br>Confirm only when everything matches. Your warranty keeps running for ${a.warranty} days after delivery either way.</div></li>
+      </ol>
+    </section>
+
+    ${a.note?`<details class="sn"><summary>Notes written by the seller</summary><p>${esc(a.note)}</p><p class="hint">Seller notes are extra information. They cannot change iGV’s warranty or refund rules.</p></details>`:''}
+
+    <section class="sec" data-note="⑭ 买家否定当前账号时给出同条件的其他候选，而不是让他回到列表重新开始">
+      <h2 class="disp">Not quite right?</h2>
+      <p class="lead">${S.items.length?'Other accounts that also have '+S.items.join(' and ')+'.':'Accounts with similar items or a similar price.'}</p>
+      <div class="sim">${sim.map(x=>`<button class="simc" data-go="${x.id}">${esc(x.title)}<br><b>${money(x.price)}</b><br><span class="hint">${x.contract?'Contract Protected · ':''}${x.verified?'iGV Verified':'Seller-described'} · ${x.warranty}-day warranty</span></button>`).join('')||'<p class="hint">No close alternatives in this demo.</p>'}</div>
+    </section>
+   </div>
+
+   <aside class="buy" data-note="⑮ 购买区只放决定下单所需的结论：价格、费用提示、发货、保障天数、合同保障、核验状态。合同标识在价格上方，质保与合同相邻成对出现。Fortnite 结算页→创建订单仅 62%，费用提前告知以减少结算意外">
+     ${a.contract?`<div style="margin-bottom:10px">${cbadge(true)}</div>`:''}
+     <div class="p">${money(a.price)}</div>
+     <div class="fee">Plus a payment processing fee that depends on how you pay. You will see the exact total before you confirm. <button class="linkbtn" data-open="fees">See fees</button></div>
+     <button class="btn y" data-buy="${a.id}"><span>Buy now</span></button>
+     <div class="row2"><button class="btn ghost sm" data-cmpd="${a.id}">${S.compare.includes(a.id)?'✓ In compare':'Add to compare'}</button><button class="btn ghost sm" data-open="chat">Ask the seller</button></div>
+     <dl><dt>Delivery</dt><dd>${a.instant?'Instant, to your order page and email':'Within '+a.eta+', by the seller'}</dd>
+       <dt>Warranty</dt><dd>${a.warranty} days · <a href="#s-pro" data-anch>what it covers</a></dd>
+       <dt>Contract</dt><dd>${a.contract?'Signed by seller and buyer · <a href="#s-con" data-anch>how it protects you</a>':'<span style="color:var(--dim)">Not available on this listing</span>'}</dd>
+       <dt>Contents</dt><dd>${a.verified?'<span class="vf">'+tick+'Checked by iGV</span> on '+a.vdate:'Seller-described, not checked'}</dd>
+       <dt>Payment</dt><dd>Held by iGV until you confirm</dd>
+       <dt>Listing</dt><dd>${a.id} · listed ${a.age?a.age+' day'+(a.age>1?'s':'')+' ago':'today'}</dd></dl>
+   </aside>
+  </div></div>`;
+  renderLocker(a); window.scrollTo({top:0,behavior:'instant'}); spy();
+}
+function contractSec(a){
+  const listed=new Date(Date.now()-a.age*864e5).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  return `<section class="sec con" id="s-con" data-note="⑰ 独立合同保障模块：先回答「质保期后被找回怎么办」，再给流程、与质保的区别、赔偿前提。所有表述都带前提：iGV 审核、认定卖家责任、追责成功（原则四）">
+      <div style="margin-bottom:8px">${cbadge(true)}</div>
+      <h2 class="disp">Beyond warranty. Protected by contract.</h2>
+      <p class="lead">The warranty ends after ${a.warranty} days. The contract does not. On this account, the seller and you both sign a contract for the sale, which gives iGV a legal basis to hold the seller responsible later. iGV stands behind the outcome.</p>
+      <div class="box ok"><h4>If this account is taken back after the warranty ends</h4><ol style="margin:0;padding-left:18px"><li>You report it to iGV with your evidence.</li><li>iGV reviews the case and decides whether the seller is responsible.</li><li>If the seller is responsible, iGV pursues the seller under the signed contract.</li><li>You are compensated. If iGV cannot recover it from the seller, iGV covers the compensation itself.</li></ol></div>
+      <h3 style="margin:18px 0 0;font-size:16px">How the contract comes into effect</h3>
+      <ol class="flow">
+        <li class="done"><b>Seller agrees</b>To list, the seller accepted the iGV Account Trading Agreement and declared the account is lawfully theirs.<br><em>Done · ${listed}</em></li>
+        <li><b>Seller signs</b>When delivering your order, the seller signs the contract for this sale.<br><em>At delivery</em></li>
+        <li><b>You sign</b>You receive the contract, check the account and add your signature. You can confirm delivery without signing, but the contract only protects you once you have signed.<br><em>After you receive it</em></li>
+        <li><b>Contract in effect</b>Both signatures are on record with iGV and attached to your order.<br><em>Once both have signed</em></li>
+        <li><b>Seller can be held to it</b>If iGV later finds the seller responsible for a problem, iGV acts on the contract and you are compensated.<br><em>Also after warranty</em></li>
+      </ol>
+      <h3 style="margin:18px 0 0;font-size:16px">Warranty and contract do different jobs</h3>
+      <table class="vs"><thead><tr><th></th><th>${a.warranty}-day warranty</th><th>Contract</th></tr></thead><tbody>
+        <tr><th>What it is for</th><td>Everyday after-sales: problems soon after delivery</td><td>Holding the seller responsible, including after the warranty has ended</td></tr>
+        <tr><th>When it applies</th><td>From delivery for ${a.warranty} days</td><td>From the moment both parties have signed</td></tr>
+        <tr><th>How you use it</th><td>Open a claim on your order page</td><td>Contact iGV support with your evidence</td></tr>
+        <tr><th>Who decides</th><td>iGV reviews the claim</td><td>iGV reviews the case and decides whether the seller is responsible</td></tr>
+        <tr><th>What you can get</th><td>A refund to your original payment method when the claim is approved</td><td>Compensation when iGV finds the seller responsible. iGV recovers it from the seller, or covers it itself if that fails</td></tr>
+      </tbody></table>
+      <h3 style="margin:18px 0 4px;font-size:16px">Questions buyers ask</h3>
+      <details class="qa" open><summary>When can I get compensation after the warranty has ended?</summary><p>Both of these need to be true:</p><ul><li>You and the seller both signed the contract for this order.</li><li>iGV reviewed the case and found the seller responsible.</li></ul><p>When both are true you are compensated. iGV first pursues the seller under the contract; if that does not succeed, iGV covers the compensation itself, so you are not left waiting on the seller.</p><p>It is not an unconditional payout: it depends on iGV’s review of the evidence.<span class="demo">Amount and timing to be confirmed</span></p></details>
+      <details class="qa"><summary>What if iGV cannot get the money back from the seller?</summary><p>Then iGV covers it. Once iGV has found the seller responsible, recovering from the seller is iGV’s job, not yours.</p></details>
+      <details class="qa"><summary>What counts as the seller being responsible?</summary><p>For example, the seller or the original owner taking the account back, or a ban caused by something the seller did. Problems caused by your own actions on the account are not the seller’s responsibility. iGV decides each case on the evidence.<span class="demo">Full criteria to be confirmed</span></p></details>
+      <details class="qa"><summary>What do I need to do to keep this protection?</summary><p>Sign the contract after you receive the account, keep your order and chat inside iGV, and keep any emails from Epic Games about the account.</p></details>
+      <details class="qa"><summary>Does it cost extra?</summary><p>No extra charge is shown on this listing.<span class="demo">To be confirmed</span></p></details>
+    </section>`;
+}
+function noContractSec(a){
+  const alt=ACC.filter(x=>x.contract&&x.id!==a.id&&(a.notable.length?x.notable.some(n=>a.notable.includes(n)):Math.abs(x.price-a.price)<=Math.max(30,a.price))).length;
+  return `<section class="sec" id="s-con" data-note="⑰ 不支持合同保障的 SKU：不出现标识和任何合同承诺，只如实说明质保期后的处理，并给出去往合同保障商品的出口">
+      <h2 class="disp">After the warranty ends</h2>
+      <p class="lead">This listing has the ${a.warranty}-day warranty only. It is not covered by a seller-and-buyer contract.</p>
+      <div class="box wn"><p style="margin:0">If a problem appears after ${a.warranty} days, you can contact iGV support and they will review it. A refund or compensation is not guaranteed at that point.</p></div>
+      <p style="margin:12px 0 0">Some accounts on iGV are Contract Protected, which adds compensation after the warranty when iGV finds the seller responsible. <button class="linkbtn" data-open="contract">How it works</button> · <button class="linkbtn" data-contractonly="${a.notable[0]?esc(a.notable[0].name):''}">${alt?`See Contract Protected accounts${a.notable[0]?' with '+esc(a.notable[0].name):''}`:'See all Contract Protected accounts'}</button></p>
+    </section>`;
+}
+function renderLocker(a){
+  let it=a.locker.filter(x=>x.type===L.tab&&(!L.rar||x.rar===L.rar)&&(!L.q||x.name.toLowerCase().includes(L.q.toLowerCase())));
+  const named=a.locker.filter(x=>x.type===L.tab).length, unnamed=a.counts[L.tab]-named;
+  const cap=L.all?it.length:18;
+  $('#locker').innerHTML=(it.length?`<div class="locker">${it.slice(0,cap).map(x=>`<button class="tile" data-item="${esc(x.name)}" style="--c:var(--r-${x.rar})"><div class="art">${ICON[x.type]}</div><div class="nm">${esc(x.name)}</div></button>`).join('')}</div>`:`<p class="hint">No ${TYPES[L.tab].toLowerCase()} match “${esc(L.q)}”${L.rar?' in '+RAR[L.rar]:''}.</p>`)
+   +(it.length>cap?`<button class="btn ghost sm" style="margin-top:10px" data-lall>Show all ${it.length} ${TYPES[L.tab].toLowerCase()}</button>`:'')
+   +(unnamed>0&&!L.q&&!L.rar?`<p class="hint" style="margin-top:8px">+ ${unnamed} more ${TYPES[L.tab].toLowerCase()} not listed individually in this demo data.</p>`:'');
+}
+
+/* ================= MODALS ================= */
+function open(html,narrow){$('#md').className='md'+(narrow?' narrow':'');$('#md').innerHTML=html;$('#ov').classList.add('on');const f=$('#md').querySelector('button,input');f&&f.focus()}
+function close(){$('#ov').classList.remove('on')}
+function toast(msg){open(`<button class="x" data-close aria-label="Close">×</button><p style="margin:14px 0">${msg}</p><button class="btn" data-close>OK</button>`,true)}
+const INFO={
+ protect:`<h2 class="disp">How buying is protected</h2><ol class="steps"><li><div><b>iGV holds your payment</b><br>The seller is paid only after delivery and the warranty rules are met.</div></li><li><div><b>Every account has a warranty</b><br>Its length is shown on each listing. It covers take-back, bans and accounts that do not match the listing.</div></li><li><div><b>iGV decides disputes</b><br>Sellers cannot set their own refund conditions. Approved refunds return to your original payment method.</div></li><li><div><b>Some accounts are also Contract Protected</b><br>The seller and buyer both sign a contract for the sale. If iGV finds the seller responsible for a problem, including after the warranty, iGV pursues the seller and makes sure you are compensated. Look for the badge.</div></li></ol><p class="hint">“iGV Verified” means the iGV system signed in and read the account’s contents. Other listings are described by the seller only.</p>`,
+ rank:`<h2 class="disp">How Best match works</h2><p>Best match puts accounts that fit your search first, then orders them by:</p><ul><li>Whether iGV has checked the contents</li><li>Whether the account is Contract Protected. This is a small boost: it moves an account ahead of similar ones, not ahead of clearly better matches</li><li>The seller’s rating and number of completed orders</li><li>Whether the original email is included</li><li>How recently the account was listed</li></ul><p>Sellers cannot pay to appear higher.</p><p class="hint">Exact weights in this demo are illustrative.<span class="demo">Demo</span></p>`,
+ contract:`<div style="margin-bottom:8px">${cbadge(true)}</div><h2 class="disp">Beyond warranty. Protected by contract.</h2><p>On Contract Protected accounts, the seller and the buyer both sign a contract for the sale.</p><ol class="steps"><li><div><b>Seller agrees to the iGV Account Trading Agreement</b><br>Required to list. The seller declares the account is lawfully theirs.</div></li><li><div><b>Seller signs the contract at delivery</b></div></li><li><div><b>You sign after you receive the account</b></div></li><li><div><b>The contract is in effect</b></div></li><li><div><b>The seller can be held to it</b><br>If a problem appears, even after the warranty, and iGV finds the seller responsible, iGV pursues the seller under the contract and you are compensated. If iGV cannot recover from the seller, iGV covers it.</div></li></ol><p class="hint">Compensation depends on both parties having signed and on iGV’s review finding the seller responsible. It is not an unconditional payout. Contract protection is being added to listings in stages, so not every account has it yet.</p><button class="btn" data-contractonly="">Show Contract Protected accounts</button>`,
+ fees:`<h2 class="disp">Payment processing fees</h2><p>The fee depends on the payment method and is added at checkout. You always see the total before you confirm.</p><table class="ct">${FEES.map(f=>`<tr><th>${f[0]}</th><td>${f[2]}%</td></tr>`).join('')}</table><p class="hint">Percentages are placeholders, not iGV’s real fees.<span class="demo">Demo values</span></p>`,
+ chat:`<h2 class="disp">Ask the seller</h2><p>Chat stays inside iGV so it can be used as evidence if there is a dispute.</p><div class="fld"><input placeholder="Type your question" id="chatIn"></div><button class="btn" data-chatsend>Send</button><p class="hint" id="chatOut"></p>`
+};
+function shotHTML(i){return `<button class="x" data-close aria-label="Close">×</button><h2 class="disp">Screenshot ${i} of 4</h2><div class="shot" style="width:100%;cursor:default"><span>${['Outfits page 1','Outfits page 2','Pickaxes','Emotes'][i-1]} · demo placeholder</span></div><div class="mfoot"><button class="btn ghost" data-shot="${i>1?i-1:4}">Previous</button><span class="hint">Use ← → keys</span><button class="btn ghost" data-shot="${i<4?i+1:1}">Next</button></div>`}
+let curShot=0;
+function itemHTML(a,name){const x=a.locker.find(y=>y.name===name);const others=ACC.filter(b=>b.id!==a.id&&b.locker.some(y=>y.name===name)).length;
+  return `<button class="x" data-close aria-label="Close">×</button><div style="display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:start">${tile(x,'big')}<div><h2 class="disp">${esc(x.name)}</h2><p>${RAR[x.rar]} ${TYPES[x.type].slice(0,-1).toLowerCase()}${x.og?' · Chapter 1 item, no longer obtainable in the shop':''}</p><p class="hint">${a.verified?'Seen in this locker by the iGV system on '+a.vdate+'.':'Listed by the seller. Not checked by iGV.'}</p><p>${others?`<button class="linkbtn" data-finditem="${esc(x.name)}">See ${others} other account${others>1?'s':''} with ${esc(x.name)}</button>`:'No other account in this demo has this item.'}</p></div></div>`}
+
+/* ---- checkout ---- */
+let C=null;
+function startBuy(id){C={a:ACC.find(x=>x.id===id),step:1,email:'',pm:'card',agree:false,signed:false,checks:[false,false,false,false]};renderBuy()}
+function renderBuy(){
+  const a=C.a, fee=FEES.find(f=>f[1]===C.pm), feeAmt=Math.round(a.price*fee[2])/100, total=a.price+feeAmt;
+  const prog=`<div class="prog">${[1,2,3,4].map(i=>`<i class="${i<=C.step?'on':''}"></i>`).join('')}</div>`;
+  const sum=`<div class="sum"><span>${esc(a.title)}</span><span>${money(a.price)}</span><span>Payment processing fee (${fee[0]}, ${fee[2]}%)<span class="demo">Demo value</span></span><span>${money(feeAmt)}</span><span class="t">Total</span><span class="t">${money(total)}</span></div>`;
+  let h=`<button class="x" data-close aria-label="Close">×</button>${prog}`;
+  if(C.step===1)h+=`<h2 class="disp">Review your order</h2>
+    <table class="ct"><tr><th>Account</th><td>${esc(a.title)} (${a.id})</td></tr><tr><th>Contents</th><td>${a.verified?'Checked by iGV on '+a.vdate:'Seller-described, not checked by iGV'}</td></tr><tr><th>Delivery</th><td>${a.instant?'Instant':'Within '+a.eta}</td></tr><tr><th>Warranty</th><td>${a.warranty} days from delivery: take-back, ban, not as described</td></tr><tr><th>Contract</th><td>${a.contract?cbadge()+' You sign after you receive the account':'Not available on this listing'}</td></tr></table>
+    <div class="fld"><label for="cEmail">Email for delivery and order updates</label><input id="cEmail" type="email" placeholder="you@example.com" value="${esc(C.email)}"></div>
+    <div class="err" id="cErr"></div><div class="mfoot"><button class="btn ghost" data-close>Cancel</button><button class="btn y" data-cnext><span>Choose payment</span></button></div>`;
+  if(C.step===2)h+=`<h2 class="disp">Choose payment</h2><div class="pm">${FEES.map(f=>`<label><input type="radio" name="pm" value="${f[1]}" ${C.pm===f[1]?'checked':''}>${f[0]}<em>${f[2]}% fee · total ${money(a.price+Math.round(a.price*f[2])/100)}</em></label>`).join('')}</div>${sum}
+    <p class="hint">Nothing is charged in this demo.</p><div class="mfoot"><button class="btn ghost" data-cback>Back</button><button class="btn y" data-cnext><span>Continue</span></button></div>`;
+  if(C.step===3)h+=`<h2 class="disp">Before you pay</h2>
+    ${a.contract?`<div class="signbox"><div style="margin-bottom:6px">${cbadge()}</div><div class="ln">✓ Seller accepted the iGV Account Trading Agreement when listing</div><div class="ln" style="color:var(--mist)">○ Seller signs the contract for this sale at delivery</div><div class="ln" style="color:var(--mist)">○ You sign after you receive and check the account. Signing is your choice; the contract protects you only once you sign.</div><p class="hint" style="margin:6px 0 0">Once both have signed, if iGV finds the seller responsible for a problem, including after the warranty, iGV pursues the seller and you are compensated.</p></div>`:`<div class="box wn"><p style="margin:0">This listing has the ${a.warranty}-day warranty only. It is not covered by a seller-and-buyer contract.</p></div>`}
+    <label style="display:flex;gap:10px;margin:14px 0;align-items:flex-start"><input type="checkbox" id="cAgree" ${C.agree?'checked':''} style="width:18px;height:18px;accent-color:var(--bus);margin-top:2px"><span>${a.contract?`I understand the warranty lasts ${a.warranty} days from delivery. After that, compensation depends on my having signed the contract and on iGV finding the seller responsible.`:`I understand the warranty lasts ${a.warranty} days from delivery, and that after it ends a refund is not guaranteed.`}</span></label>
+    ${sum}<div class="err" id="cErr"></div><div class="mfoot"><button class="btn ghost" data-cback>Back</button><button class="btn y" data-cnext><span>Pay ${money(total)}</span></button></div>`;
+  if(C.step===4){const end=new Date(Date.now()+a.warranty*864e5).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});const done=C.checks.every(Boolean);
+    h+=`<h2 class="disp">Order placed<span class="demo">Simulated</span></h2><p>${a.instant?'Your login details are ready.':'The seller has been notified and should deliver within '+a.eta+'.'} iGV is holding ${money(total)}; the seller has not been paid.</p>
+    ${a.instant?`<div class="cred">Epic email: s•••••••@${a.emailType.toLowerCase()}.com<br>Password: ••••••••••&nbsp; <button class="linkbtn" data-reveal>Reveal</button>${a.origEmail?'<br>Email inbox login: included':''}</div>`:''}
+    <h3 style="margin:14px 0 6px;font-size:15px">Check these before you confirm</h3>
+    ${['I can sign in and the key items are in the locker'+(a.notable.length?' ('+a.notable.slice(0,3).map(x=>x.name).join(', ')+')':''),'I changed the password and set the email to my own','I turned on two-factor sign-in','I linked my console or platform'].map((t,i)=>`<label style="display:flex;gap:10px;margin:6px 0"><input type="checkbox" data-cchk="${i}" ${C.checks[i]?'checked':''} style="width:18px;height:18px;accent-color:var(--bus)">${t}</label>`).join('')}
+    ${a.contract?`<div class="signbox"><div style="margin-bottom:6px">${cbadge()}<span class="demo">Simulated</span></div><div class="ln" style="color:var(--ok)">✓ Seller signed at delivery${a.instant?'':' (shown as signed for this demo)'}</div>${C.signed?`<div class="ln" style="color:var(--ok)">✓ You signed just now</div><div class="ln"><b>Contract in effect</b> · No. IGV-C-${a.id.slice(3)} · saved to your order</div>`:`<div class="ln" style="color:var(--warn)">○ Not signed by you yet. Contract protection starts when you sign.</div><button class="btn" style="margin-top:6px" data-signopen>Review and sign the contract</button>`}</div>`:''}
+    <div class="box wn" style="margin-top:10px">Warranty runs until <b>${end}</b>, whether or not you confirm today.${a.contract?' The contract stays in effect after that date.':''}</div>
+    <div class="mfoot"><button class="btn ghost" data-report>Something is wrong</button><button class="btn y" data-confirm ${done?'':'disabled style="opacity:.5"'}><span>Confirm delivery</span></button></div><p class="hint">${done?'':'Tick all four checks to enable confirmation. '+' Confirming early is the most common way buyers lose their chance to report a mismatch.'}</p>`}
+  open(h,true);
+}
+
+/* ================= EVENTS + ROUTER ================= */
+function route(){
+  close(); const m=location.hash.match(/^#\/account\/(.+)$/);
+  if(m){L={tab:'outfit',rar:'',q:'',all:false};renderDetail(decodeURIComponent(m[1]));$('#tray').classList.toggle('on',S.compare.length>0);renderTray()}
+  else{renderList();window.scrollTo({top:S.scroll,behavior:'instant'})}
+}
+function go(id){if(!location.hash.startsWith('#/account'))S.scroll=window.scrollY;location.hash='#/account/'+id}
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-go],[data-hot],[data-rm],[data-clear],[data-add],[data-freetext],[data-open],[data-close],[data-uncmp],[data-cmpclear],[data-back],[data-ltab],[data-lall],[data-shot],[data-item],[data-finditem],[data-buy],[data-cnext],[data-cback],[data-confirm],[data-report],[data-reveal],[data-cmpd],[data-verifiedonly],[data-chatsend],[data-anch],[data-contractonly],[data-signopen],[data-sign],[data-cresume],[data-signlate]');
+  if(e.target.id==='ov'){close();return}
+  if(!t)return; const d=t.dataset;
+  if('anch' in d){e.preventDefault();document.querySelector(t.getAttribute('href')).scrollIntoView();return}
+  if(d.go){go(d.go);return}
+  if(d.hot){S.items.includes(d.hot)?S.items=S.items.filter(x=>x!==d.hot):S.items.push(d.hot);renderList();return}
+  if(d.rm){rm(d.rm);renderList();return}
+  if('clear' in d){clearAll();renderList();return}
+  if(d.add){S.items.push(d.add);S.text='';renderList();$('#q').focus();return}
+  if('freetext' in d){S.text=$('#q').value.trim().toLowerCase();renderList();return}
+  if(d.open){if(d.open==='compare'){if(S.compare.length>=2)open(compareHTML())}else open(`<button class="x" data-close aria-label="Close">×</button>`+INFO[d.open],true);return}
+  if('close' in d){close();return}
+  if(d.uncmp){toggleCmp(d.uncmp,false);location.hash.startsWith('#/account')?route():renderList();return}
+  if('cmpclear' in d){S.compare=[];location.hash.startsWith('#/account')?route():renderList();return}
+  if('back' in d){location.hash='#/';return}
+  if(d.ltab){L.tab=d.ltab;L.all=false;document.querySelectorAll('[data-ltab]').forEach(b=>b.setAttribute('aria-selected',b.dataset.ltab===L.tab));renderLocker(cur());return}
+  if('lall' in d){L.all=true;renderLocker(cur());return}
+  if(d.shot){curShot=+d.shot;open(shotHTML(curShot));return}
+  if(d.item){open(itemHTML(cur(),d.item),true);return}
+  if(d.finditem){clearAll();S.items=[d.finditem];location.hash='#/';S.scroll=0;return}
+  if(d.buy){startBuy(d.buy);return}
+  if('cback' in d){C.step--;renderBuy();return}
+  if('cnext' in d){
+    if(C.step===1){const v=$('#cEmail').value.trim();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){$('#cErr').textContent='Enter an email address like name@example.com so we can deliver the account.';return}C.email=v}
+    if(C.step===2){C.pm=document.querySelector('input[name=pm]:checked').value}
+    if(C.step===3){if(!$('#cAgree').checked){$('#cErr').textContent='Tick the box to confirm you understand the warranty period.';return}C.agree=true}
+    C.step++;renderBuy();return}
+  if('confirm' in d){open(`<button class="x" data-close aria-label="Close">×</button><h2 class="disp">Delivery confirmed<span class="demo">Simulated</span></h2><p>Thanks. Your ${C.a.warranty}-day warranty is still active. If the account is taken back, banned or turns out not to match the listing, open a claim from your order page.</p>${C.a.contract?(C.signed?'<p>Your contract with the seller is in effect and stays on record after the warranty ends. If a problem appears later, contact iGV support with your evidence.</p>':'<div class="box wn"><p style="margin:0">You have not signed the contract yet, so contract protection is not active for this order. You can still sign it from your order page.</p><button class="btn" style="margin-top:8px" data-signlate>Sign the contract now</button></div><p></p>'):''}<button class="btn y" data-back><span>Back to accounts</span></button>`,true);return}
+  if('report' in d){open(`<button class="x" data-close aria-label="Close">×</button><h2 class="disp">Report a problem<span class="demo">Simulated</span></h2><p>To review your claim iGV needs:</p><ul><li>The account’s current login details</li><li>Screenshots showing the problem</li><li>Any emails from Epic Games about the account</li></ul><p>iGV keeps holding the payment while the claim is open.</p><button class="btn" data-close>Close</button>`,true);return}
+  if('reveal' in d){t.outerHTML='<span style="color:var(--warn)">hidden in demo</span>';return}
+  if(d.cmpd){toggleCmp(d.cmpd,!S.compare.includes(d.cmpd));t.textContent=S.compare.includes(d.cmpd)?'✓ In compare':'Add to compare';return}
+  if('verifiedonly' in d){S.verified=true;location.hash='#/';return}
+  if('contractonly' in d){clearAll();S.contract=true;if(d.contractonly&&ACC.some(a=>a.contract&&a.locker.some(x=>x.name===d.contractonly)))S.items=[d.contractonly];S.scroll=0;if(location.hash==='#/'){close();renderList();window.scrollTo({top:0,behavior:'instant'})}else location.hash='#/';return}
+  if('cresume' in d){renderBuy();return}
+  if('signopen' in d){open(`<button class="x" data-cresume aria-label="Close">×</button><div style="margin-bottom:8px">${cbadge(true)}</div><h2 class="disp">Account sale contract<span class="demo">Sample summary · not legal text</span></h2><table class="ct"><tr><th>Order</th><td>${C.a.id} · ${esc(C.a.title)}</td></tr><tr><th>Seller</th><td>${esc(SELLERS[C.a.seller].name)} · signed at delivery</td></tr><tr><th>Seller declares</th><td>The account is lawfully theirs to sell; they transfer full ownership and will not recover it or help anyone recover it.</td></tr><tr><th>Buyer confirms</th><td>The account was received and matches the listing.</td></tr><tr><th>If there is a problem</th><td>iGV reviews the case. If it finds the seller responsible, iGV pursues the seller under this contract and the buyer is compensated. If iGV cannot recover from the seller, iGV covers the compensation.</td></tr></table><div class="mfoot"><button class="btn ghost" data-cresume>Not now</button><button class="btn y" data-sign><span>Sign contract</span></button></div>`,true);return}
+  if('signlate' in d){C.signed=true;open(`<button class="x" data-close aria-label="Close">×</button><h2 class="disp">Contract in effect<span class="demo">Simulated</span></h2><p>Both signatures are on record. No. IGV-C-${C.a.id.slice(3)}, saved to your order.</p><button class="btn y" data-back><span>Back to accounts</span></button>`,true);return}
+  if('sign' in d){C.signed=true;renderBuy();return}
+  if('chatsend' in d){$('#chatOut').textContent='Message sent (simulated). Sellers usually reply within a few hours.';$('#chatIn').value='';return}
+});
+function cur(){return ACC.find(a=>a.id===decodeURIComponent(location.hash.split('/')[2]))}
+document.addEventListener('change',e=>{
+  const t=e.target,d=t.dataset;
+  if(d.f){S[d.f]=t.checked;renderList()}
+  else if(d.set){t.checked?S[d.set].add(t.value):S[d.set].delete(t.value);renderList()}
+  else if(d.sel){S[d.sel]=+t.value;renderList()}
+  else if(d.n){S[d.n]=t.value===''?'':Math.max(0,+t.value);renderList()}
+  else if(t.id==='sort'){S.sort=t.value;renderList()}
+  else if(d.cmp){if(!toggleCmp(d.cmp,t.checked))t.checked=false}
+  else if(t.id==='lrar'){L.rar=t.value;L.all=false;renderLocker(cur())}
+  else if(t.name==='pm'){C.pm=t.value;renderBuy()}
+  else if(d.cchk){C.checks[+d.cchk]=t.checked;renderBuy()}
+});
+document.addEventListener('input',e=>{
+  if(e.target.id==='q')suggest(e.target.value);
+  if(e.target.id==='lq'){L.q=e.target.value;L.all=false;renderLocker(cur())}
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')close();
+  if($('#ov').classList.contains('on')&&curShot&&$('#md .shot')){if(e.key==='ArrowRight'){curShot=curShot<4?curShot+1:1;open(shotHTML(curShot))}if(e.key==='ArrowLeft'){curShot=curShot>1?curShot-1:4;open(shotHTML(curShot))}}
+  if(e.target.id==='q'){
+    if(e.key==='Enter'){const f=$('#sugg [data-add]');if(f){S.items.push(f.dataset.add);S.text=''}else S.text=e.target.value.trim().toLowerCase();renderList();$('#q').focus()}
+    if(e.key==='Backspace'&&!e.target.value&&S.items.length){S.items.pop();renderList();$('#q').focus()}
+  }
+});
+$('#notesBtn').addEventListener('click',e=>{const on=document.body.classList.toggle('notes');e.currentTarget.setAttribute('aria-pressed',on)});
+function spy(){
+  const links=document.querySelectorAll('.anch a'); if(!links.length)return;
+  let cur=null; links.forEach(l=>{const el=document.querySelector(l.getAttribute('href'));if(el&&el.getBoundingClientRect().top<=140)cur=l});
+  if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-4){/* bottom of page: keep last reached */}
+  links.forEach(l=>{const on=l===cur;l.classList.toggle('on',on);on?l.setAttribute('aria-current','true'):l.removeAttribute('aria-current');const el=document.querySelector(l.getAttribute('href'));el&&el.classList.toggle('cur',on)});
+}
+window.addEventListener('scroll',spy,{passive:true});
+window.addEventListener('hashchange',route);
+if(!location.hash)history.replaceState(null,'','#/');
+route();
+</script>
+</body>
+</html>
